@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type Page = "home" | "auth" | "app"
+
 type AppView =
   | "dashboard"
   | "planner"
@@ -12,6 +13,14 @@ type AppView =
   | "ai"
   | "profile"
 
+type StudyTask = {
+  id: string
+  title: string
+  subject: string
+  duration: string
+  priority: "Low" | "Medium" | "High"
+  status: "Pending" | "In Progress" | "Done"
+}
 const features = [
   {
     title: "Study Planner",
@@ -431,7 +440,7 @@ function getViewTitle(view: AppView) {
 
 function renderView(view: AppView) {
   if (view === "dashboard") return <DashboardView />
-  if (view === "planner") return <SimplePage title="Study Planner" text="Daily task planning will be built here." />
+  if (view === "planner") return <PlannerView />
   if (view === "subjects") return <SimplePage title="Subjects & Chapters" text="Subject and chapter progress tracking will be built here." />
   if (view === "pyq") return <SimplePage title="PYQ Practice" text="PYQ practice tracker will be built here." />
   if (view === "mocks") return <SimplePage title="Mock Tests" text="Mock test score and weak topic analysis will be built here." />
@@ -440,7 +449,229 @@ function renderView(view: AppView) {
   if (view === "profile") return <SimplePage title="Profile" text="Student profile and preferences will be built here." />
   return <AiTutorView />
 }
+function PlannerView() {
+  const [tasks, setTasks] = useState<StudyTask[]>(() => {
+    try {
+      const savedTasks = localStorage.getItem("study-sankalp-tasks")
+      if (savedTasks) return JSON.parse(savedTasks) as StudyTask[]
+    } catch {
+      return []
+    }
 
+    return [
+      {
+        id: "1",
+        title: "Physics: Kinematics revision",
+        subject: "Physics",
+        duration: "60",
+        priority: "High",
+        status: "Pending",
+      },
+      {
+        id: "2",
+        title: "Chemistry: Organic weak topics",
+        subject: "Chemistry",
+        duration: "45",
+        priority: "Medium",
+        status: "In Progress",
+      },
+    ]
+  })
+
+  const [title, setTitle] = useState("")
+  const [subject, setSubject] = useState("Physics")
+  const [duration, setDuration] = useState("60")
+  const [priority, setPriority] = useState<StudyTask["priority"]>("Medium")
+
+  useEffect(() => {
+    localStorage.setItem("study-sankalp-tasks", JSON.stringify(tasks))
+  }, [tasks])
+
+  const completedTasks = tasks.filter((task) => task.status === "Done").length
+  const totalMinutes = tasks.reduce(
+    (sum, task) => sum + Number(task.duration || 0),
+    0,
+  )
+
+  function addTask() {
+    if (!title.trim()) {
+      alert("Please enter a study task.")
+      return
+    }
+
+    const newTask: StudyTask = {
+      id: Date.now().toString(),
+      title: title.trim(),
+      subject,
+      duration,
+      priority,
+      status: "Pending",
+    }
+
+    setTasks([newTask, ...tasks])
+    setTitle("")
+    setSubject("Physics")
+    setDuration("60")
+    setPriority("Medium")
+  }
+
+  function updateTaskStatus(id: string, status: StudyTask["status"]) {
+    setTasks(
+      tasks.map((task) => (task.id === id ? { ...task, status } : task)),
+    )
+  }
+
+  function deleteTask(id: string) {
+    setTasks(tasks.filter((task) => task.id !== id))
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="rounded-[2rem] bg-slate-950 p-8 text-white">
+        <p className="text-sm font-semibold text-blue-200">Study Planner</p>
+        <h2 className="mt-3 text-4xl font-black">
+          Plan today. Protect your consistency.
+        </h2>
+        <p className="mt-4 max-w-2xl text-slate-300">
+          Add your daily study tasks, track status, and keep your preparation
+          organized.
+        </p>
+      </div>
+
+      <div className="grid gap-5 md:grid-cols-3">
+        <StatCard title="Total Tasks" value={String(tasks.length)} text="Today’s plan" />
+        <StatCard title="Completed" value={String(completedTasks)} text="Tasks done" />
+        <StatCard title="Study Time" value={`${totalMinutes} min`} text="Planned duration" />
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[420px_1fr]">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6">
+          <h3 className="text-2xl font-black">Add study task</h3>
+
+          <label className="mt-6 block text-sm font-bold text-slate-700">
+            Task title
+          </label>
+          <input
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            placeholder="Example: Maths integration practice"
+            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
+          />
+
+          <label className="mt-4 block text-sm font-bold text-slate-700">
+            Subject
+          </label>
+          <select
+            value={subject}
+            onChange={(event) => setSubject(event.target.value)}
+            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
+          >
+            <option>Physics</option>
+            <option>Chemistry</option>
+            <option>Maths</option>
+            <option>Biology</option>
+            <option>English</option>
+            <option>General Studies</option>
+          </select>
+
+          <label className="mt-4 block text-sm font-bold text-slate-700">
+            Duration
+          </label>
+          <select
+            value={duration}
+            onChange={(event) => setDuration(event.target.value)}
+            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
+          >
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="90">1.5 hours</option>
+            <option value="120">2 hours</option>
+          </select>
+
+          <label className="mt-4 block text-sm font-bold text-slate-700">
+            Priority
+          </label>
+          <select
+            value={priority}
+            onChange={(event) =>
+              setPriority(event.target.value as StudyTask["priority"])
+            }
+            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
+          >
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+
+          <button
+            onClick={addTask}
+            className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700"
+          >
+            Add Task
+          </button>
+        </div>
+
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6">
+          <h3 className="text-2xl font-black">Today’s tasks</h3>
+
+          <div className="mt-6 space-y-4">
+            {tasks.length === 0 ? (
+              <div className="rounded-2xl bg-slate-50 p-6 text-center">
+                <p className="font-bold text-slate-600">
+                  No tasks yet. Add your first study task.
+                </p>
+              </div>
+            ) : (
+              tasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                >
+                  <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                    <div>
+                      <h4 className="font-black text-slate-950">
+                        {task.title}
+                      </h4>
+                      <p className="mt-2 text-sm text-slate-500">
+                        {task.subject} • {task.duration} min • {task.priority} priority
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => deleteTask(task.id)}
+                      className="rounded-xl border border-red-200 bg-white px-3 py-2 text-sm font-bold text-red-600 hover:bg-red-50"
+                    >
+                      Delete
+                    </button>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {(["Pending", "In Progress", "Done"] as StudyTask["status"][]).map(
+                      (status) => (
+                        <button
+                          key={status}
+                          onClick={() => updateTaskStatus(task.id, status)}
+                          className={`rounded-full px-4 py-2 text-xs font-bold transition ${
+                            task.status === status
+                              ? "bg-blue-600 text-white"
+                              : "bg-white text-slate-600 hover:bg-slate-100"
+                          }`}
+                        >
+                          {status}
+                        </button>
+                      ),
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 function DashboardView() {
   return (
     <div className="space-y-6">
