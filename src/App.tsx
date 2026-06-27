@@ -21,6 +21,7 @@ type StudyTask = {
   priority: "Low" | "Medium" | "High"
   status: "Pending" | "In Progress" | "Done"
 }
+
 const features = [
   {
     title: "Study Planner",
@@ -439,10 +440,10 @@ function DashboardApp({
           <div className="mt-6 rounded-3xl bg-blue-50 p-4">
             <p className="text-sm font-black text-blue-700">MVP Progress</p>
             <div className="mt-3 h-2 rounded-full bg-blue-100">
-              <div className="h-2 w-[38%] rounded-full bg-blue-600" />
+              <div className="h-2 w-[42%] rounded-full bg-blue-600" />
             </div>
             <p className="mt-2 text-xs font-semibold text-blue-700">
-              Base + dashboard + planner started
+              Dashboard + planner working
             </p>
           </div>
         </aside>
@@ -483,14 +484,54 @@ function getViewTitle(view: AppView) {
 function renderView(view: AppView) {
   if (view === "dashboard") return <DashboardView />
   if (view === "planner") return <PlannerView />
-  if (view === "subjects") return <SimplePage title="Subjects & Chapters" text="Subject and chapter progress tracking will be built here." />
-  if (view === "pyq") return <SimplePage title="PYQ Practice" text="PYQ practice tracker will be built here." />
-  if (view === "mocks") return <SimplePage title="Mock Tests" text="Mock test score and weak topic analysis will be built here." />
-  if (view === "mistakes") return <SimplePage title="Mistake Notebook" text="Mistake tracking and revisit system will be built here." />
-  if (view === "analytics") return <SimplePage title="Analytics" text="Study progress and performance analytics will be built here." />
-  if (view === "profile") return <SimplePage title="Profile" text="Student profile and preferences will be built here." />
+  if (view === "subjects") {
+    return (
+      <SimplePage
+        title="Subjects & Chapters"
+        text="Subject and chapter progress tracking will be built here."
+      />
+    )
+  }
+  if (view === "pyq") {
+    return (
+      <SimplePage title="PYQ Practice" text="PYQ practice tracker will be built here." />
+    )
+  }
+  if (view === "mocks") {
+    return (
+      <SimplePage
+        title="Mock Tests"
+        text="Mock test score and weak topic analysis will be built here."
+      />
+    )
+  }
+  if (view === "mistakes") {
+    return (
+      <SimplePage
+        title="Mistake Notebook"
+        text="Mistake tracking and revisit system will be built here."
+      />
+    )
+  }
+  if (view === "analytics") {
+    return (
+      <SimplePage
+        title="Analytics"
+        text="Study progress and performance analytics will be built here."
+      />
+    )
+  }
+  if (view === "profile") {
+    return (
+      <SimplePage
+        title="Profile"
+        text="Student profile and preferences will be built here."
+      />
+    )
+  }
   return <AiTutorView />
 }
+
 function PlannerView() {
   const [tasks, setTasks] = useState<StudyTask[]>(() => {
     try {
@@ -530,10 +571,14 @@ function PlannerView() {
   }, [tasks])
 
   const completedTasks = tasks.filter((task) => task.status === "Done").length
+  const pendingTasks = tasks.filter((task) => task.status === "Pending").length
   const totalMinutes = tasks.reduce(
     (sum, task) => sum + Number(task.duration || 0),
     0,
   )
+
+  const completionRate =
+    tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0
 
   function addTask() {
     if (!title.trim()) {
@@ -567,46 +612,111 @@ function PlannerView() {
     setTasks(tasks.filter((task) => task.id !== id))
   }
 
+  function clearCompletedTasks() {
+    setTasks(tasks.filter((task) => task.status !== "Done"))
+  }
+
   return (
     <div className="space-y-6">
-      <div className="rounded-[2rem] bg-slate-950 p-8 text-white">
-        <p className="text-sm font-semibold text-blue-200">Study Planner</p>
-        <h2 className="mt-3 text-4xl font-black">
-          Plan today. Protect your consistency.
-        </h2>
-        <p className="mt-4 max-w-2xl text-slate-300">
-          Add your daily study tasks, track status, and keep your preparation
-          organized.
-        </p>
+      <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl">
+          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/30 blur-3xl" />
+          <p className="text-sm font-bold text-blue-200">Study Planner</p>
+          <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-tight md:text-5xl">
+            Plan today. Protect your consistency.
+          </h2>
+          <p className="mt-5 max-w-2xl text-slate-300">
+            Add your study tasks, set priority, track completion, and keep your
+            preparation organized every day.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              ✅ {completedTasks} completed
+            </span>
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              ⏳ {pendingTasks} pending
+            </span>
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              🎯 {completionRate}% done
+            </span>
+          </div>
+        </div>
+
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <p className="text-sm font-black text-slate-500">Planner Progress</p>
+          <h3 className="mt-3 text-4xl font-black text-blue-600">
+            {completionRate}%
+          </h3>
+          <p className="mt-2 text-sm font-semibold text-slate-500">
+            Today’s task completion
+          </p>
+
+          <div className="mt-6 h-4 rounded-full bg-slate-100">
+            <div
+              className="h-4 rounded-full bg-blue-600 transition-all"
+              style={{ width: `${completionRate}%` }}
+            />
+          </div>
+
+          <button
+            onClick={clearCompletedTasks}
+            className="mt-6 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-black text-slate-700 hover:bg-slate-100"
+          >
+            Clear completed tasks
+          </button>
+        </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-3">
-        <StatCard title="Total Tasks" value={String(tasks.length)} text="Today’s plan" />
-        <StatCard title="Completed" value={String(completedTasks)} text="Tasks done" />
-        <StatCard title="Study Time" value={`${totalMinutes} min`} text="Planned duration" />
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <PremiumStatCard
+          title="Total Tasks"
+          value={String(tasks.length)}
+          text="Today’s plan"
+          icon="📌"
+        />
+        <PremiumStatCard
+          title="Completed"
+          value={String(completedTasks)}
+          text="Tasks done"
+          icon="✅"
+        />
+        <PremiumStatCard
+          title="Pending"
+          value={String(pendingTasks)}
+          text="Need attention"
+          icon="⏳"
+        />
+        <PremiumStatCard
+          title="Study Time"
+          value={`${totalMinutes} min`}
+          text="Planned duration"
+          icon="⏱️"
+        />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[420px_1fr]">
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-6">
+      <div className="grid gap-6 xl:grid-cols-[420px_1fr]">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <p className="text-sm font-black text-blue-600">Create Task</p>
           <h3 className="text-2xl font-black">Add study task</h3>
 
-          <label className="mt-6 block text-sm font-bold text-slate-700">
+          <label className="mt-6 block text-sm font-black text-slate-700">
             Task title
           </label>
           <input
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             placeholder="Example: Maths integration practice"
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-semibold outline-none transition focus:border-blue-500 focus:bg-white"
           />
 
-          <label className="mt-4 block text-sm font-bold text-slate-700">
+          <label className="mt-4 block text-sm font-black text-slate-700">
             Subject
           </label>
           <select
             value={subject}
             onChange={(event) => setSubject(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-semibold outline-none transition focus:border-blue-500 focus:bg-white"
           >
             <option>Physics</option>
             <option>Chemistry</option>
@@ -616,87 +726,122 @@ function PlannerView() {
             <option>General Studies</option>
           </select>
 
-          <label className="mt-4 block text-sm font-bold text-slate-700">
-            Duration
-          </label>
-          <select
-            value={duration}
-            onChange={(event) => setDuration(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
-          >
-            <option value="30">30 minutes</option>
-            <option value="45">45 minutes</option>
-            <option value="60">1 hour</option>
-            <option value="90">1.5 hours</option>
-            <option value="120">2 hours</option>
-          </select>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="mt-4 block text-sm font-black text-slate-700">
+                Duration
+              </label>
+              <select
+                value={duration}
+                onChange={(event) => setDuration(event.target.value)}
+                className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-semibold outline-none transition focus:border-blue-500 focus:bg-white"
+              >
+                <option value="30">30 min</option>
+                <option value="45">45 min</option>
+                <option value="60">1 hour</option>
+                <option value="90">1.5 hours</option>
+                <option value="120">2 hours</option>
+              </select>
+            </div>
 
-          <label className="mt-4 block text-sm font-bold text-slate-700">
-            Priority
-          </label>
-          <select
-            value={priority}
-            onChange={(event) =>
-              setPriority(event.target.value as StudyTask["priority"])
-            }
-            className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
-          >
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-          </select>
+            <div>
+              <label className="mt-4 block text-sm font-black text-slate-700">
+                Priority
+              </label>
+              <select
+                value={priority}
+                onChange={(event) =>
+                  setPriority(event.target.value as StudyTask["priority"])
+                }
+                className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-semibold outline-none transition focus:border-blue-500 focus:bg-white"
+              >
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select>
+            </div>
+          </div>
 
           <button
             onClick={addTask}
-            className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700"
+            className="mt-6 w-full rounded-2xl bg-blue-600 px-5 py-4 font-black text-white shadow-xl shadow-blue-600/20 transition hover:bg-blue-700"
           >
             Add Task
           </button>
         </div>
 
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-6">
-          <h3 className="text-2xl font-black">Today’s tasks</h3>
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-black text-blue-600">Today</p>
+              <h3 className="text-2xl font-black">Study tasks</h3>
+            </div>
+
+            <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-black text-blue-700">
+              {tasks.length} tasks
+            </span>
+          </div>
 
           <div className="mt-6 space-y-4">
             {tasks.length === 0 ? (
-              <div className="rounded-2xl bg-slate-50 p-6 text-center">
-                <p className="font-bold text-slate-600">
-                  No tasks yet. Add your first study task.
+              <div className="rounded-[2rem] bg-slate-50 p-10 text-center">
+                <p className="text-lg font-black text-slate-700">
+                  No tasks yet.
+                </p>
+                <p className="mt-2 text-sm font-semibold text-slate-500">
+                  Add your first study task and start your plan.
                 </p>
               </div>
             ) : (
               tasks.map((task) => (
                 <div
                   key={task.id}
-                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                  className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5 transition hover:border-blue-200 hover:bg-white hover:shadow-lg"
                 >
                   <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                     <div>
-                      <h4 className="font-black text-slate-950">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs font-black ${
+                            task.priority === "High"
+                              ? "bg-red-50 text-red-700"
+                              : task.priority === "Medium"
+                                ? "bg-amber-50 text-amber-700"
+                                : "bg-green-50 text-green-700"
+                          }`}
+                        >
+                          {task.priority}
+                        </span>
+                        <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-blue-700">
+                          {task.subject}
+                        </span>
+                      </div>
+
+                      <h4 className="mt-3 text-lg font-black text-slate-950">
                         {task.title}
                       </h4>
-                      <p className="mt-2 text-sm text-slate-500">
-                        {task.subject} • {task.duration} min • {task.priority} priority
+                      <p className="mt-2 text-sm font-semibold text-slate-500">
+                        Planned duration: {task.duration} minutes
                       </p>
                     </div>
 
                     <button
                       onClick={() => deleteTask(task.id)}
-                      className="rounded-xl border border-red-200 bg-white px-3 py-2 text-sm font-bold text-red-600 hover:bg-red-50"
+                      className="rounded-xl border border-red-200 bg-white px-4 py-2 text-sm font-black text-red-600 hover:bg-red-50"
                     >
                       Delete
                     </button>
                   </div>
 
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div className="mt-5 flex flex-wrap gap-2">
                     {(["Pending", "In Progress", "Done"] as StudyTask["status"][]).map(
                       (status) => (
                         <button
                           key={status}
                           onClick={() => updateTaskStatus(task.id, status)}
-                          className={`rounded-full px-4 py-2 text-xs font-bold transition ${
+                          className={`rounded-full px-4 py-2 text-xs font-black transition ${
                             task.status === status
-                              ? "bg-blue-600 text-white"
+                              ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
                               : "bg-white text-slate-600 hover:bg-slate-100"
                           }`}
                         >
@@ -714,6 +859,7 @@ function PlannerView() {
     </div>
   )
 }
+
 function DashboardView() {
   return (
     <div className="space-y-6">
@@ -856,24 +1002,6 @@ function MiniCard({ title, text }: { title: string; text: string }) {
     <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
       <h3 className="text-xl font-black">{title}</h3>
       <p className="mt-3 text-sm font-semibold text-slate-500">{text}</p>
-    </div>
-  )
-}
-
-function StatCard({
-  title,
-  value,
-  text,
-}: {
-  title: string
-  value: string
-  text: string
-}) {
-  return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-6">
-      <p className="text-sm font-bold text-slate-500">{title}</p>
-      <h3 className="mt-3 text-4xl font-black text-blue-600">{value}</h3>
-      <p className="mt-2 text-sm text-slate-500">{text}</p>
     </div>
   )
 }
