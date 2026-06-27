@@ -55,17 +55,35 @@ const exams = [
   "CLAT",
 ]
 
-const sidebarItems: { label: string; view: AppView; icon: string }[] = [
-  { label: "Dashboard", view: "dashboard", icon: "🏠" },
-  { label: "Study Planner", view: "planner", icon: "📅" },
-  { label: "Subjects", view: "subjects", icon: "📚" },
-  { label: "PYQ Practice", view: "pyq", icon: "π" },
-  { label: "Mock Tests", view: "mocks", icon: "📝" },
-  { label: "Mistake Notebook", view: "mistakes", icon: "⚠️" },
-  { label: "Analytics", view: "analytics", icon: "📊" },
-  { label: "AI Tutor", view: "ai", icon: "🤖" },
-  { label: "Profile", view: "profile", icon: "👤" },
+const sidebarSections = [
+  {
+    title: "LEARN",
+    items: [
+      { label: "Dashboard", view: "dashboard" as AppView, icon: "🏠" },
+      { label: "Study Planner", view: "planner" as AppView, icon: "📅" },
+      { label: "Subjects", view: "subjects" as AppView, icon: "📚" },
+      { label: "PYQ Practice", view: "pyq" as AppView, icon: "π" },
+    ],
+  },
+  {
+    title: "ASSESS",
+    items: [
+      { label: "Mock Tests", view: "mocks" as AppView, icon: "📝" },
+      { label: "Mistake Notebook", view: "mistakes" as AppView, icon: "⚠️" },
+      { label: "Analytics", view: "analytics" as AppView, icon: "📊" },
+    ],
+  },
+  {
+    title: "AI LEARNING",
+    items: [{ label: "AI Tutor", view: "ai" as AppView, icon: "🤖" }],
+  },
+  {
+    title: "ACCOUNT",
+    items: [{ label: "Profile", view: "profile" as AppView, icon: "👤" }],
+  },
 ]
+
+const sidebarItems = sidebarSections.flatMap((section) => section.items)
 
 function App() {
   const [page, setPage] = useState<Page>("home")
@@ -374,56 +392,80 @@ function DashboardApp({
   onLogout: () => void
 }) {
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-950">
+    <main className="min-h-screen bg-[#f3f7fb] text-slate-950">
       <div className="flex min-h-screen">
-        <aside className="hidden w-72 border-r border-slate-200 bg-white p-5 md:block">
-          <div className="mb-8 flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white">
+        <aside className="hidden w-80 border-r border-slate-200 bg-white p-5 md:flex md:flex-col">
+          <div className="mb-8 flex items-center gap-3 rounded-3xl bg-slate-950 p-4 text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-xl">
               🛡️
             </div>
             <div>
-              <p className="font-black">Study Sankalp</p>
-              <p className="text-xs font-medium text-slate-500">
-                Prep dashboard
+              <p className="text-lg font-black">Study Sankalp</p>
+              <p className="text-xs font-semibold text-slate-300">
+                With you at every stage
               </p>
             </div>
           </div>
 
-          <nav className="space-y-2">
-            {sidebarItems.map((item) => (
-              <button
-                key={item.view}
-                onClick={() => setActiveView(item.view)}
-                className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold transition ${
-                  activeView === item.view
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
-                }`}
-              >
-                <span>{item.icon}</span>
-                {item.label}
-              </button>
+          <nav className="flex-1 space-y-6 overflow-y-auto">
+            {sidebarSections.map((section) => (
+              <div key={section.title}>
+                <p className="mb-3 px-3 text-xs font-black tracking-[0.2em] text-slate-400">
+                  {section.title}
+                </p>
+
+                <div className="space-y-2">
+                  {section.items.map((item) => (
+                    <button
+                      key={item.view}
+                      onClick={() => setActiveView(item.view)}
+                      className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-black transition ${
+                        activeView === item.view
+                          ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20"
+                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
+                      }`}
+                    >
+                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 text-base">
+                        {item.icon}
+                      </span>
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </nav>
+
+          <div className="mt-6 rounded-3xl bg-blue-50 p-4">
+            <p className="text-sm font-black text-blue-700">MVP Progress</p>
+            <div className="mt-3 h-2 rounded-full bg-blue-100">
+              <div className="h-2 w-[38%] rounded-full bg-blue-600" />
+            </div>
+            <p className="mt-2 text-xs font-semibold text-blue-700">
+              Base + dashboard + planner started
+            </p>
+          </div>
         </aside>
 
         <section className="flex-1">
-          <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
+          <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur-xl">
             <div>
-              <p className="text-sm font-semibold text-slate-500">
-                Demo workspace
-              </p>
-              <h1 className="text-2xl font-black">
-                {getViewTitle(activeView)}
-              </h1>
+              <p className="text-sm font-bold text-slate-500">Demo workspace</p>
+              <h1 className="text-3xl font-black">{getViewTitle(activeView)}</h1>
             </div>
 
-            <button
-              onClick={onLogout}
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100"
-            >
-              Logout
-            </button>
+            <div className="flex items-center gap-3">
+              <div className="hidden rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-bold text-slate-600 lg:block">
+                Target Exam: JEE / Custom
+              </div>
+
+              <button
+                onClick={onLogout}
+                className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-black text-slate-700 shadow-sm hover:bg-slate-100"
+              >
+                Logout
+              </button>
+            </div>
           </header>
 
           <div className="p-6">{renderView(activeView)}</div>
@@ -675,49 +717,145 @@ function PlannerView() {
 function DashboardView() {
   return (
     <div className="space-y-6">
-      <div className="rounded-[2rem] bg-slate-950 p-8 text-white">
-        <p className="text-sm font-semibold text-blue-200">Welcome back</p>
-        <h2 className="mt-3 text-4xl font-black">
-          Today is a good day to protect your Sankalp.
-        </h2>
-        <p className="mt-4 max-w-2xl text-slate-300">
-          This dashboard will show today’s plan, syllabus progress, revision
-          due, mock test scores, and weak topics.
-        </p>
+      <div className="grid gap-6 xl:grid-cols-[1.4fr_0.8fr]">
+        <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl">
+          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/30 blur-3xl" />
+          <p className="text-sm font-bold text-blue-200">Welcome back, Ganesh</p>
+          <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-tight md:text-5xl">
+            Today is a good day to protect your Sankalp.
+          </h2>
+          <p className="mt-5 max-w-2xl text-slate-300">
+            Track today’s plan, syllabus progress, revision due, mock scores,
+            and weak topics from one focused dashboard.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              🔥 3 day streak
+            </span>
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              ⏳ 180 days left
+            </span>
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              🎯 4 hrs daily goal
+            </span>
+          </div>
+        </div>
+
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <p className="text-sm font-black text-slate-500">Today’s Focus</p>
+          <h3 className="mt-3 text-2xl font-black">Physics Revision</h3>
+          <p className="mt-2 text-sm text-slate-500">
+            Kinematics + 25 PYQs + mistake review
+          </p>
+
+          <div className="mt-6 space-y-3">
+            <FocusRow title="Kinematics notes" value="45 min" />
+            <FocusRow title="PYQ practice" value="25 Qs" />
+            <FocusRow title="Mistake review" value="15 min" />
+          </div>
+        </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-3">
-        <StatCard title="Study Goal" value="4 hrs" text="Daily target" />
-        <StatCard title="Syllabus" value="64%" text="Overall progress" />
-        <StatCard title="Mock Score" value="142/300" text="Latest test" />
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <PremiumStatCard title="Study Goal" value="4 hrs" text="Daily target" icon="⏱️" />
+        <PremiumStatCard title="Syllabus" value="64%" text="Overall progress" icon="📚" />
+        <PremiumStatCard title="Mock Score" value="142/300" text="Latest test" icon="📝" />
+        <PremiumStatCard title="Revision Due" value="7" text="Chapters pending" icon="🔁" />
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-2">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6">
-          <h3 className="text-xl font-black">Today’s Plan</h3>
-          <div className="mt-5 space-y-3">
+      <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-black text-blue-600">Today</p>
+              <h3 className="text-2xl font-black">Study Plan</h3>
+            </div>
+            <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-black text-blue-700">
+              3 tasks
+            </span>
+          </div>
+
+          <div className="mt-6 space-y-3">
             <Task title="Physics: Kinematics revision" status="Pending" />
             <Task title="Chemistry: Organic weak topics" status="In Progress" />
             <Task title="Maths: 25 PYQs" status="Done" />
           </div>
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6">
-          <h3 className="text-xl font-black">Weak Topics</h3>
-          <div className="mt-5 flex flex-wrap gap-3">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <p className="text-sm font-black text-red-600">Needs attention</p>
+          <h3 className="text-2xl font-black">Weak Topics</h3>
+
+          <div className="mt-6 flex flex-wrap gap-3">
             {["Organic Chemistry", "Integration", "Modern Physics", "Time Management"].map(
               (topic) => (
                 <span
                   key={topic}
-                  className="rounded-full bg-red-50 px-4 py-2 text-sm font-bold text-red-700"
+                  className="rounded-full bg-red-50 px-4 py-2 text-sm font-black text-red-700"
                 >
                   {topic}
                 </span>
               ),
             )}
           </div>
+
+          <div className="mt-6 rounded-3xl bg-slate-50 p-5">
+            <p className="text-sm font-bold text-slate-600">
+              Suggestion: Revise one weak topic daily before solving new questions.
+            </p>
+          </div>
         </div>
       </div>
+
+      <div className="grid gap-6 xl:grid-cols-3">
+        <MiniCard title="PYQ Practice" text="125 questions solved this week." />
+        <MiniCard title="Mock Trend" text="Score improved by 18 marks." />
+        <MiniCard title="AI Tutor" text="Coming soon for smarter preparation." />
+      </div>
+    </div>
+  )
+}
+
+function PremiumStatCard({
+  title,
+  value,
+  text,
+  icon,
+}: {
+  title: string
+  value: string
+  text: string
+  icon: string
+}) {
+  return (
+    <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-xl">
+        {icon}
+      </div>
+      <p className="mt-5 text-sm font-black text-slate-500">{title}</p>
+      <h3 className="mt-2 text-4xl font-black text-blue-600">{value}</h3>
+      <p className="mt-2 text-sm font-semibold text-slate-500">{text}</p>
+    </div>
+  )
+}
+
+function FocusRow({ title, value }: { title: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
+      <p className="font-bold text-slate-700">{title}</p>
+      <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-black text-blue-700">
+        {value}
+      </span>
+    </div>
+  )
+}
+
+function MiniCard({ title, text }: { title: string; text: string }) {
+  return (
+    <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+      <h3 className="text-xl font-black">{title}</h3>
+      <p className="mt-3 text-sm font-semibold text-slate-500">{text}</p>
     </div>
   )
 }
