@@ -22,14 +22,271 @@ type StudyTask = {
   status: "Pending" | "In Progress" | "Done"
 }
 
+type TopicStatus =
+  | "Not Started"
+  | "Learning"
+  | "Revision"
+  | "PYQ Done"
+  | "Weak"
+  | "Completed"
+
+type SyllabusTopic = {
+  id: string
+  name: string
+}
+
+type SyllabusChapter = {
+  id: string
+  name: string
+  topics: SyllabusTopic[]
+}
+
+type SyllabusSubject = {
+  id: string
+  name: string
+  group?: string
+  chapters: SyllabusChapter[]
+}
+
+type TopicProgressMap = Record<string, TopicStatus>
+
+const builtInSyllabus: SyllabusSubject[] = [
+  {
+    id: "physics",
+    name: "Physics",
+    chapters: [
+      {
+        id: "phy-units-dimensions",
+        name: "Units and Dimensions",
+        topics: [
+          { id: "phy-units-intro", name: "Introduction" },
+          { id: "phy-physical-quantities", name: "Physical Quantities" },
+          { id: "phy-system-units", name: "System of Units" },
+          { id: "phy-dimensions", name: "Dimensions of Physical Quantities" },
+          {
+            id: "phy-dimensional-analysis",
+            name: "Dimensional Analysis and Applications",
+          },
+        ],
+      },
+      {
+        id: "phy-vectors",
+        name: "Vectors",
+        topics: [
+          { id: "phy-vector-types", name: "Definition and Types of Vector" },
+          { id: "phy-vector-addition", name: "Addition of Vectors" },
+          { id: "phy-vector-subtraction", name: "Subtraction of Vector" },
+          { id: "phy-vector-components", name: "Components of Vector" },
+          {
+            id: "phy-scalar-product",
+            name: "Scalar Product and Applications",
+          },
+        ],
+      },
+      {
+        id: "phy-motion-line",
+        name: "Motion in a Straight Line",
+        topics: [
+          {
+            id: "phy-position-displacement",
+            name: "Position, Distance and Displacement",
+          },
+          { id: "phy-speed", name: "Speed" },
+          { id: "phy-velocity", name: "Velocity" },
+          { id: "phy-acceleration", name: "Acceleration" },
+          { id: "phy-graphs", name: "Graphs" },
+          {
+            id: "phy-uniform-acceleration",
+            name: "Motion with Constant Acceleration",
+          },
+        ],
+      },
+      {
+        id: "phy-laws-motion",
+        name: "Laws of Motion",
+        topics: [
+          { id: "phy-force-types", name: "Laws and Types of Force" },
+          { id: "phy-fbd", name: "Free Body Diagram and NLM Applications" },
+          { id: "phy-atwood", name: "Atwood Machine and Block Problems" },
+          { id: "phy-elevator", name: "Elevator and Spring Problems" },
+          { id: "phy-pseudo-force", name: "Pseudo Force" },
+          { id: "phy-constraint", name: "Constraint Motion" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "maths",
+    name: "Mathematics",
+    chapters: [
+      {
+        id: "math-basic",
+        name: "Basic Mathematics",
+        topics: [
+          { id: "math-number-system", name: "Number System" },
+          { id: "math-wavy-curve", name: "Wavy Curve Method" },
+          { id: "math-logarithm", name: "Logarithm" },
+          { id: "math-modulus", name: "Modulus" },
+        ],
+      },
+      {
+        id: "math-sets",
+        name: "Sets",
+        topics: [
+          { id: "math-types-sets", name: "Types of Sets" },
+          { id: "math-operations-sets", name: "Operations on Sets" },
+          { id: "math-algebra-sets", name: "Algebra of Sets" },
+          {
+            id: "math-union-intersection",
+            name: "Union and Intersection Problems",
+          },
+        ],
+      },
+      {
+        id: "math-trig-functions",
+        name: "Trigonometric Functions",
+        topics: [
+          {
+            id: "math-trig-intro",
+            name: "Trigonometric Ratios and Basic Identities",
+          },
+          {
+            id: "math-trig-domain-range",
+            name: "Domain and Range of Trigonometric Functions",
+          },
+          { id: "math-trig-allied-angles", name: "Allied Angles" },
+          { id: "math-trig-formulae", name: "Sum and Difference Formulae" },
+          {
+            id: "math-trig-transformations",
+            name: "Transformation Formulae",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "physical-chemistry",
+    name: "Physical Chemistry",
+    group: "Chemistry",
+    chapters: [
+      {
+        id: "pc-basic-concepts",
+        name: "Some Basic Concepts of Chemistry",
+        topics: [
+          { id: "pc-matter", name: "Nature and Classification of Matter" },
+          { id: "pc-measurement", name: "Properties of Matter and SI Units" },
+          { id: "pc-uncertainty", name: "Uncertainty in Measurement" },
+          { id: "pc-laws", name: "Laws of Chemical Combinations" },
+          { id: "pc-mole", name: "Mole Concept" },
+          { id: "pc-stoichiometry", name: "Stoichiometry" },
+          { id: "pc-concentration", name: "Concentration Terms" },
+        ],
+      },
+      {
+        id: "pc-structure-atom",
+        name: "Structure of Atom",
+        topics: [
+          { id: "pc-atom-intro", name: "Introduction" },
+          { id: "pc-fundamental-particles", name: "Fundamental Particles" },
+          { id: "pc-atomic-models", name: "Atomic Models" },
+          { id: "pc-light-spectrum", name: "Nature of Light and Spectrum" },
+          { id: "pc-bohr", name: "Bohr Model" },
+          { id: "pc-quantum", name: "Quantum Mechanical Model" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "organic-chemistry",
+    name: "Organic Chemistry",
+    group: "Chemistry",
+    chapters: [
+      {
+        id: "oc-iupac",
+        name: "IUPAC Naming",
+        topics: [
+          {
+            id: "oc-carbon-hybridization",
+            name: "Tetravalency of Carbon and Hybridization",
+          },
+          {
+            id: "oc-functional-groups",
+            name: "Classification by Functional Groups",
+          },
+          { id: "oc-unsaturation", name: "Degree of Unsaturation" },
+          {
+            id: "oc-hydrocarbons-iupac",
+            name: "IUPAC of Hydrocarbons and Cycloalkanes",
+          },
+          { id: "oc-aromatic-iupac", name: "IUPAC of Aromatic Compounds" },
+          { id: "oc-common-naming", name: "Common Naming" },
+        ],
+      },
+      {
+        id: "oc-goc",
+        name: "General Organic Chemistry",
+        topics: [
+          { id: "oc-bond-fission", name: "Covalent Bond Fission" },
+          { id: "oc-inductive-effect", name: "Inductive Effect" },
+          { id: "oc-hyperconjugation", name: "Hyperconjugation" },
+          { id: "oc-resonance", name: "Resonance" },
+          { id: "oc-aromaticity", name: "Aromaticity" },
+          { id: "oc-acid-base", name: "Acidic and Basic Strength" },
+          { id: "oc-tautomerism", name: "Tautomerism" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "inorganic-chemistry",
+    name: "Inorganic Chemistry",
+    group: "Chemistry",
+    chapters: [
+      {
+        id: "ioc-periodicity",
+        name: "Classification of Elements and Periodicity",
+        topics: [
+          {
+            id: "ioc-classification-need",
+            name: "Need for Classification of Elements",
+          },
+          { id: "ioc-modern-periodic-law", name: "Modern Periodic Law" },
+          {
+            id: "ioc-electronic-config",
+            name: "Electronic Configuration and Periodic Table",
+          },
+          { id: "ioc-blocks", name: "s, p, d and f Blocks" },
+          { id: "ioc-periodic-properties", name: "Periodic Properties" },
+          {
+            id: "ioc-electronegativity",
+            name: "Electronegativity and Applications",
+          },
+          { id: "ioc-oxides", name: "Oxides" },
+        ],
+      },
+      {
+        id: "ioc-chemical-bonding",
+        name: "Chemical Bonding and Molecular Structure",
+        topics: [
+          { id: "ioc-ionic-bond", name: "Ionic Bond and Lattice Energy" },
+          { id: "ioc-lewis", name: "Kossel-Lewis Approach" },
+          { id: "ioc-resonance", name: "Resonance and Resonance Energy" },
+          { id: "ioc-vsepr", name: "VSEPR Theory" },
+          { id: "ioc-vbt", name: "Valence Bond Theory" },
+          { id: "ioc-hybridisation", name: "Hybridisation" },
+        ],
+      },
+    ],
+  },
+]
 const features = [
   {
     title: "Study Planner",
     text: "Plan daily study tasks, priorities, and revision blocks.",
   },
   {
-    title: "Subjects & Chapters",
-    text: "Track chapter status, weak topics, and syllabus completion.",
+    title: "Built-in Syllabus",
+    text: "Track chapters and topics without creating them manually.",
   },
   {
     title: "Mock Test Tracker",
@@ -91,7 +348,9 @@ function App() {
   const [activeView, setActiveView] = useState<AppView>("dashboard")
 
   if (page === "auth") {
-    return <AuthPage onBack={() => setPage("home")} onDemo={() => setPage("app")} />
+    return (
+      <AuthPage onBack={() => setPage("home")} onDemo={() => setPage("app")} />
+    )
   }
 
   if (page === "app") {
@@ -162,7 +421,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-              Study Sankalp helps students plan study, track progress, revise
+              Study Sankalp helps students plan study, track topics, revise
               smarter, analyze tests, and stay consistent toward every serious
               exam goal.
             </p>
@@ -297,21 +556,6 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
           </div>
         </div>
       </section>
-
-      <footer className="border-t border-slate-200 bg-white px-6 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-lg font-black">Study Sankalp</p>
-            <p className="mt-1 text-sm text-slate-500">
-              With you at every stage of your preparation.
-            </p>
-          </div>
-
-          <p className="text-sm text-slate-500">
-            Built for focused students and serious preparation.
-          </p>
-        </div>
-      </footer>
     </main>
   )
 }
@@ -335,7 +579,7 @@ function AuthPage({
       <section className="mx-auto mt-16 grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-center">
         <div>
           <div className="mb-6 inline-flex rounded-full bg-blue-500/20 px-4 py-2 text-sm font-bold text-blue-200">
-            Demo login
+            Student Login
           </div>
           <h1 className="text-5xl font-black tracking-tight md:text-6xl">
             Start your preparation dashboard.
@@ -371,7 +615,7 @@ function AuthPage({
             onClick={onDemo}
             className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700"
           >
-            Continue Demo
+            Continue to Dashboard
           </button>
 
           <p className="mt-4 text-center text-sm text-slate-500">
@@ -382,7 +626,6 @@ function AuthPage({
     </main>
   )
 }
-
 function DashboardApp({
   activeView,
   setActiveView,
@@ -440,10 +683,10 @@ function DashboardApp({
           <div className="mt-6 rounded-3xl bg-blue-50 p-4">
             <p className="text-sm font-black text-blue-700">MVP Progress</p>
             <div className="mt-3 h-2 rounded-full bg-blue-100">
-              <div className="h-2 w-[42%] rounded-full bg-blue-600" />
+              <div className="h-2 w-[48%] rounded-full bg-blue-600" />
             </div>
             <p className="mt-2 text-xs font-semibold text-blue-700">
-              Dashboard + planner working
+              Dashboard + planner + syllabus tracker
             </p>
           </div>
         </aside>
@@ -451,8 +694,12 @@ function DashboardApp({
         <section className="flex-1">
           <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur-xl">
             <div>
-              <p className="text-sm font-bold text-slate-500">Demo workspace</p>
-              <h1 className="text-3xl font-black">{getViewTitle(activeView)}</h1>
+              <p className="text-sm font-bold text-slate-500">
+                Student Workspace
+              </p>
+              <h1 className="text-3xl font-black">
+                {getViewTitle(activeView)}
+              </h1>
             </div>
 
             <div className="flex items-center gap-3">
@@ -484,19 +731,17 @@ function getViewTitle(view: AppView) {
 function renderView(view: AppView) {
   if (view === "dashboard") return <DashboardView />
   if (view === "planner") return <PlannerView />
-  if (view === "subjects") {
+  if (view === "subjects") return <SubjectsView />
+
+  if (view === "pyq") {
     return (
       <SimplePage
-        title="Subjects & Chapters"
-        text="Subject and chapter progress tracking will be built here."
+        title="PYQ Practice"
+        text="PYQ practice tracker will be built here."
       />
     )
   }
-  if (view === "pyq") {
-    return (
-      <SimplePage title="PYQ Practice" text="PYQ practice tracker will be built here." />
-    )
-  }
+
   if (view === "mocks") {
     return (
       <SimplePage
@@ -505,6 +750,7 @@ function renderView(view: AppView) {
       />
     )
   }
+
   if (view === "mistakes") {
     return (
       <SimplePage
@@ -513,6 +759,7 @@ function renderView(view: AppView) {
       />
     )
   }
+
   if (view === "analytics") {
     return (
       <SimplePage
@@ -521,6 +768,7 @@ function renderView(view: AppView) {
       />
     )
   }
+
   if (view === "profile") {
     return (
       <SimplePage
@@ -529,9 +777,353 @@ function renderView(view: AppView) {
       />
     )
   }
+
   return <AiTutorView />
 }
+function SubjectsView() {
+  const [progress, setProgress] = useState<TopicProgressMap>(() => {
+    try {
+      const savedProgress = localStorage.getItem("study-sankalp-topic-progress")
+      if (savedProgress) return JSON.parse(savedProgress) as TopicProgressMap
+    } catch {
+      return {}
+    }
 
+    return {}
+  })
+
+  const [selectedSubjectId, setSelectedSubjectId] = useState(
+    builtInSyllabus[0]?.id ?? "",
+  )
+
+  const [openChapterId, setOpenChapterId] = useState(
+    builtInSyllabus[0]?.chapters[0]?.id ?? "",
+  )
+
+  useEffect(() => {
+    localStorage.setItem(
+      "study-sankalp-topic-progress",
+      JSON.stringify(progress),
+    )
+  }, [progress])
+
+  const selectedSubject =
+    builtInSyllabus.find((subject) => subject.id === selectedSubjectId) ??
+    builtInSyllabus[0]
+
+  const allTopics = builtInSyllabus.flatMap((subject) =>
+    subject.chapters.flatMap((chapter) => chapter.topics),
+  )
+
+  const completedTopics = allTopics.filter(
+    (topic) => progress[topic.id] === "Completed",
+  ).length
+
+  const weakTopics = allTopics.filter(
+    (topic) => progress[topic.id] === "Weak",
+  ).length
+
+  const learningTopics = allTopics.filter(
+    (topic) => progress[topic.id] === "Learning",
+  ).length
+
+  const overallProgress =
+    allTopics.length > 0
+      ? Math.round((completedTopics / allTopics.length) * 100)
+      : 0
+
+  const statuses: TopicStatus[] = [
+    "Not Started",
+    "Learning",
+    "Revision",
+    "PYQ Done",
+    "Weak",
+    "Completed",
+  ]
+
+  function getTopicStatus(topicId: string): TopicStatus {
+    return progress[topicId] ?? "Not Started"
+  }
+
+  function updateTopicStatus(topicId: string, status: TopicStatus) {
+    setProgress({ ...progress, [topicId]: status })
+  }
+
+  function getChapterProgress(chapter: SyllabusChapter) {
+    if (chapter.topics.length === 0) return 0
+
+    const completed = chapter.topics.filter(
+      (topic) => getTopicStatus(topic.id) === "Completed",
+    ).length
+
+    return Math.round((completed / chapter.topics.length) * 100)
+  }
+
+  function getSubjectProgress(subject: SyllabusSubject) {
+    const topics = subject.chapters.flatMap((chapter) => chapter.topics)
+    if (topics.length === 0) return 0
+
+    const completed = topics.filter(
+      (topic) => getTopicStatus(topic.id) === "Completed",
+    ).length
+
+    return Math.round((completed / topics.length) * 100)
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl">
+          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/30 blur-3xl" />
+
+          <p className="text-sm font-bold text-blue-200">
+            Built-in Syllabus Tracker
+          </p>
+
+          <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-tight md:text-5xl">
+            Chapters and topics are already ready.
+          </h2>
+
+          <p className="mt-5 max-w-2xl text-slate-300">
+            Students only track progress. They do not need to manually create
+            chapters or topics.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              📚 {builtInSyllabus.length} subject groups
+            </span>
+
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              🧩 {allTopics.length} topics
+            </span>
+
+            <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold">
+              🎯 {overallProgress}% complete
+            </span>
+          </div>
+        </div>
+
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <p className="text-sm font-black text-slate-500">Overall Progress</p>
+
+          <h3 className="mt-3 text-4xl font-black text-blue-600">
+            {overallProgress}%
+          </h3>
+
+          <p className="mt-2 text-sm font-semibold text-slate-500">
+            Topic completion across all subjects
+          </p>
+
+          <div className="mt-6 h-4 rounded-full bg-slate-100">
+            <div
+              className="h-4 rounded-full bg-blue-600 transition-all"
+              style={{ width: `${overallProgress}%` }}
+            />
+          </div>
+
+          <div className="mt-6 grid grid-cols-3 gap-3">
+            <div className="rounded-2xl bg-blue-50 p-4">
+              <p className="text-xs font-black text-blue-700">Learning</p>
+              <p className="mt-2 text-2xl font-black text-blue-700">
+                {learningTopics}
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-red-50 p-4">
+              <p className="text-xs font-black text-red-700">Weak</p>
+              <p className="mt-2 text-2xl font-black text-red-700">
+                {weakTopics}
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-green-50 p-4">
+              <p className="text-xs font-black text-green-700">Done</p>
+              <p className="mt-2 text-2xl font-black text-green-700">
+                {completedTopics}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <PremiumStatCard
+          title="Subjects"
+          value={String(builtInSyllabus.length)}
+          text="Built-in groups"
+          icon="📚"
+        />
+
+        <PremiumStatCard
+          title="Topics"
+          value={String(allTopics.length)}
+          text="Ready to track"
+          icon="🧩"
+        />
+
+        <PremiumStatCard
+          title="Completed"
+          value={String(completedTopics)}
+          text="Topics done"
+          icon="✅"
+        />
+
+        <PremiumStatCard
+          title="Weak"
+          value={String(weakTopics)}
+          text="Need revision"
+          icon="⚠️"
+        />
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-sm font-black text-blue-600">JEE Syllabus</p>
+          <h3 className="text-2xl font-black">Subjects</h3>
+
+          <div className="mt-6 space-y-3">
+            {builtInSyllabus.map((subject) => {
+              const subjectProgress = getSubjectProgress(subject)
+
+              return (
+                <button
+                  key={subject.id}
+                  onClick={() => {
+                    setSelectedSubjectId(subject.id)
+                    setOpenChapterId(subject.chapters[0]?.id ?? "")
+                  }}
+                  className={`w-full rounded-2xl border p-4 text-left transition ${
+                    selectedSubjectId === subject.id
+                      ? "border-blue-200 bg-blue-50 shadow-lg"
+                      : "border-slate-200 bg-slate-50 hover:bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-black">{subject.name}</p>
+
+                      {subject.group ? (
+                        <p className="mt-1 text-xs font-bold text-slate-500">
+                          {subject.group}
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-blue-700">
+                      {subjectProgress}%
+                    </span>
+                  </div>
+
+                  <div className="mt-3 h-2 rounded-full bg-white">
+                    <div
+                      className="h-2 rounded-full bg-blue-600"
+                      style={{ width: `${subjectProgress}%` }}
+                    />
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="space-y-5">
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <p className="text-sm font-black text-blue-600">Selected Subject</p>
+            <h3 className="text-3xl font-black">{selectedSubject.name}</h3>
+            <p className="mt-2 text-sm font-semibold text-slate-500">
+              Open a chapter and update topic status.
+            </p>
+          </div>
+
+          {selectedSubject.chapters.map((chapter) => {
+            const chapterProgress = getChapterProgress(chapter)
+            const isOpen = openChapterId === chapter.id
+
+            return (
+              <div
+                key={chapter.id}
+                className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm"
+              >
+                <button
+                  onClick={() => setOpenChapterId(isOpen ? "" : chapter.id)}
+                  className="flex w-full flex-col gap-4 text-left sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div>
+                    <p className="text-sm font-black text-slate-500">
+                      {chapter.topics.length} topics
+                    </p>
+                    <h4 className="text-2xl font-black">{chapter.name}</h4>
+                  </div>
+
+                  <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-black text-blue-700">
+                    {chapterProgress}% complete
+                  </span>
+                </button>
+
+                <div className="mt-5 h-3 rounded-full bg-slate-100">
+                  <div
+                    className="h-3 rounded-full bg-blue-600 transition-all"
+                    style={{ width: `${chapterProgress}%` }}
+                  />
+                </div>
+
+                {isOpen ? (
+                  <div className="mt-6 space-y-4">
+                    {chapter.topics.map((topic) => {
+                      const topicStatus = getTopicStatus(topic.id)
+
+                      return (
+                        <div
+                          key={topic.id}
+                          className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5"
+                        >
+                          <span
+                            className={`rounded-full px-3 py-1 text-xs font-black ${
+                              topicStatus === "Completed"
+                                ? "bg-green-50 text-green-700"
+                                : topicStatus === "Weak"
+                                  ? "bg-red-50 text-red-700"
+                                  : "bg-blue-50 text-blue-700"
+                            }`}
+                          >
+                            {topicStatus}
+                          </span>
+
+                          <h5 className="mt-3 text-lg font-black">
+                            {topic.name}
+                          </h5>
+
+                          <div className="mt-5 flex flex-wrap gap-2">
+                            {statuses.map((status) => (
+                              <button
+                                key={status}
+                                onClick={() =>
+                                  updateTopicStatus(topic.id, status)
+                                }
+                                className={`rounded-full px-4 py-2 text-xs font-black transition ${
+                                  topicStatus === status
+                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
+                                    : "bg-white text-slate-600 hover:bg-slate-100"
+                                }`}
+                              >
+                                {status}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                ) : null}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
 function PlannerView() {
   const [tasks, setTasks] = useState<StudyTask[]>(() => {
     try {
@@ -620,7 +1212,6 @@ function PlannerView() {
     <div className="space-y-6">
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl">
-          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/30 blur-3xl" />
           <p className="text-sm font-bold text-blue-200">Study Planner</p>
           <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-tight md:text-5xl">
             Plan today. Protect your consistency.
@@ -801,19 +1392,11 @@ function PlannerView() {
                   <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span
-                          className={`rounded-full px-3 py-1 text-xs font-black ${
-                            task.priority === "High"
-                              ? "bg-red-50 text-red-700"
-                              : task.priority === "Medium"
-                                ? "bg-amber-50 text-amber-700"
-                                : "bg-green-50 text-green-700"
-                          }`}
-                        >
-                          {task.priority}
-                        </span>
                         <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-blue-700">
                           {task.subject}
+                        </span>
+                        <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">
+                          {task.priority}
                         </span>
                       </div>
 
@@ -904,24 +1487,35 @@ function DashboardView() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-        <PremiumStatCard title="Study Goal" value="4 hrs" text="Daily target" icon="⏱️" />
-        <PremiumStatCard title="Syllabus" value="64%" text="Overall progress" icon="📚" />
-        <PremiumStatCard title="Mock Score" value="142/300" text="Latest test" icon="📝" />
-        <PremiumStatCard title="Revision Due" value="7" text="Chapters pending" icon="🔁" />
+        <PremiumStatCard
+          title="Study Goal"
+          value="4 hrs"
+          text="Daily target"
+          icon="⏱️"
+        />
+        <PremiumStatCard
+          title="Syllabus"
+          value="64%"
+          text="Overall progress"
+          icon="📚"
+        />
+        <PremiumStatCard
+          title="Mock Score"
+          value="142/300"
+          text="Latest test"
+          icon="📝"
+        />
+        <PremiumStatCard
+          title="Revision Due"
+          value="7"
+          text="Chapters pending"
+          icon="🔁"
+        />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-black text-blue-600">Today</p>
-              <h3 className="text-2xl font-black">Study Plan</h3>
-            </div>
-            <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-black text-blue-700">
-              3 tasks
-            </span>
-          </div>
-
+          <h3 className="text-2xl font-black">Study Plan</h3>
           <div className="mt-6 space-y-3">
             <Task title="Physics: Kinematics revision" status="Pending" />
             <Task title="Chemistry: Organic weak topics" status="In Progress" />
@@ -934,35 +1528,25 @@ function DashboardView() {
           <h3 className="text-2xl font-black">Weak Topics</h3>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            {["Organic Chemistry", "Integration", "Modern Physics", "Time Management"].map(
-              (topic) => (
-                <span
-                  key={topic}
-                  className="rounded-full bg-red-50 px-4 py-2 text-sm font-black text-red-700"
-                >
-                  {topic}
-                </span>
-              ),
-            )}
-          </div>
-
-          <div className="mt-6 rounded-3xl bg-slate-50 p-5">
-            <p className="text-sm font-bold text-slate-600">
-              Suggestion: Revise one weak topic daily before solving new questions.
-            </p>
+            {[
+              "Organic Chemistry",
+              "Integration",
+              "Modern Physics",
+              "Time Management",
+            ].map((topic) => (
+              <span
+                key={topic}
+                className="rounded-full bg-red-50 px-4 py-2 text-sm font-black text-red-700"
+              >
+                {topic}
+              </span>
+            ))}
           </div>
         </div>
-      </div>
-
-      <div className="grid gap-6 xl:grid-cols-3">
-        <MiniCard title="PYQ Practice" text="125 questions solved this week." />
-        <MiniCard title="Mock Trend" text="Score improved by 18 marks." />
-        <MiniCard title="AI Tutor" text="Coming soon for smarter preparation." />
       </div>
     </div>
   )
 }
-
 function PremiumStatCard({
   title,
   value,
@@ -993,15 +1577,6 @@ function FocusRow({ title, value }: { title: string; value: string }) {
       <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-black text-blue-700">
         {value}
       </span>
-    </div>
-  )
-}
-
-function MiniCard({ title, text }: { title: string; text: string }) {
-  return (
-    <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-      <h3 className="text-xl font-black">{title}</h3>
-      <p className="mt-3 text-sm font-semibold text-slate-500">{text}</p>
     </div>
   )
 }
