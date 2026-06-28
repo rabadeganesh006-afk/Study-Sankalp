@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react"
 import LandingPage from "./components/LandingPage"
 import { builtInSyllabus } from "./data/syllabus"
-import type { SyllabusChapter, SyllabusSubject, TopicProgressMap, TopicStatus } from "./data/syllabus"
+import type {
+  SyllabusChapter,
+  SyllabusSubject,
+  TopicProgressMap,
+  TopicStatus,
+} from "./data/syllabus"
 
 type Page = "home" | "auth" | "app"
 
@@ -60,9 +65,7 @@ function App() {
   const [activeView, setActiveView] = useState<AppView>("dashboard")
 
   if (page === "auth") {
-    return (
-      <AuthPage onBack={() => setPage("home")} onDemo={() => setPage("app")} />
-    )
+    return <AuthPage onBack={() => setPage("home")} onDemo={() => setPage("app")} />
   }
 
   if (page === "app") {
@@ -81,13 +84,7 @@ function App() {
   return <LandingPage onLogin={() => setPage("auth")} />
 }
 
-function AuthPage({
-  onBack,
-  onDemo,
-}: {
-  onBack: () => void
-  onDemo: () => void
-}) {
+function AuthPage({ onBack, onDemo }: { onBack: () => void; onDemo: () => void }) {
   return (
     <main className="min-h-screen bg-slate-950 px-6 py-10 text-white">
       <button
@@ -106,17 +103,15 @@ function AuthPage({
             Start your preparation dashboard.
           </h1>
           <p className="mt-6 text-lg leading-8 text-slate-300">
-            Real login with cloud sync will be added using AWS Amplify and
-            Cognito. For now, continue with demo mode and explore the dashboard.
+            Real login with cloud sync will be added using AWS Amplify and Cognito. For
+            now, continue with demo mode and explore the dashboard.
           </p>
         </div>
 
         <div className="rounded-[2rem] border border-white/10 bg-white p-8 text-slate-950 shadow-2xl">
           <h2 className="text-2xl font-black">Login to Study Sankalp</h2>
 
-          <label className="mt-6 block text-sm font-bold text-slate-700">
-            Email
-          </label>
+          <label className="mt-6 block text-sm font-bold text-slate-700">Email</label>
           <input
             disabled
             placeholder="student@example.com"
@@ -215,12 +210,8 @@ function DashboardApp({
         <section className="flex-1">
           <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur-xl">
             <div>
-              <p className="text-sm font-bold text-slate-500">
-                Student Workspace
-              </p>
-              <h1 className="text-3xl font-black">
-                {getViewTitle(activeView)}
-              </h1>
+              <p className="text-sm font-bold text-slate-500">Student Workspace</p>
+              <h1 className="text-3xl font-black">{getViewTitle(activeView)}</h1>
             </div>
 
             <div className="flex items-center gap-3">
@@ -322,10 +313,7 @@ function SubjectsView() {
   )
 
   useEffect(() => {
-    localStorage.setItem(
-      "study-sankalp-topic-progress",
-      JSON.stringify(progress),
-    )
+    localStorage.setItem("study-sankalp-topic-progress", JSON.stringify(progress))
   }, [progress])
 
   const selectedSubject =
@@ -340,18 +328,14 @@ function SubjectsView() {
     (topic) => progress[topic.id] === "Completed",
   ).length
 
-  const weakTopics = allTopics.filter(
-    (topic) => progress[topic.id] === "Weak",
-  ).length
+  const weakTopics = allTopics.filter((topic) => progress[topic.id] === "Weak").length
 
   const learningTopics = allTopics.filter(
     (topic) => progress[topic.id] === "Learning",
   ).length
 
   const overallProgress =
-    allTopics.length > 0
-      ? Math.round((completedTopics / allTopics.length) * 100)
-      : 0
+    allTopics.length > 0 ? Math.round((completedTopics / allTopics.length) * 100) : 0
 
   const statuses: TopicStatus[] = [
     "Not Started",
@@ -397,17 +381,15 @@ function SubjectsView() {
         <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl">
           <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/30 blur-3xl" />
 
-          <p className="text-sm font-bold text-blue-200">
-            Built-in Syllabus Tracker
-          </p>
+          <p className="text-sm font-bold text-blue-200">Built-in Syllabus Tracker</p>
 
           <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-tight md:text-5xl">
             Chapters and topics are already ready.
           </h2>
 
           <p className="mt-5 max-w-2xl text-slate-300">
-            Students only track progress. They do not need to manually create
-            chapters or topics.
+            Students only track progress. They do not need to manually create chapters
+            or topics.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -428,9 +410,7 @@ function SubjectsView() {
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-sm font-black text-slate-500">Overall Progress</p>
 
-          <h3 className="mt-3 text-4xl font-black text-blue-600">
-            {overallProgress}%
-          </h3>
+          <h3 className="mt-3 text-4xl font-black text-blue-600">{overallProgress}%</h3>
 
           <p className="mt-2 text-sm font-semibold text-slate-500">
             Topic completion across all subjects
@@ -446,16 +426,12 @@ function SubjectsView() {
           <div className="mt-6 grid grid-cols-3 gap-3">
             <div className="rounded-2xl bg-blue-50 p-4">
               <p className="text-xs font-black text-blue-700">Learning</p>
-              <p className="mt-2 text-2xl font-black text-blue-700">
-                {learningTopics}
-              </p>
+              <p className="mt-2 text-2xl font-black text-blue-700">{learningTopics}</p>
             </div>
 
             <div className="rounded-2xl bg-red-50 p-4">
               <p className="text-xs font-black text-red-700">Weak</p>
-              <p className="mt-2 text-2xl font-black text-red-700">
-                {weakTopics}
-              </p>
+              <p className="mt-2 text-2xl font-black text-red-700">{weakTopics}</p>
             </div>
 
             <div className="rounded-2xl bg-green-50 p-4">
@@ -611,17 +587,13 @@ function SubjectsView() {
                             {topicStatus}
                           </span>
 
-                          <h5 className="mt-3 text-lg font-black">
-                            {topic.name}
-                          </h5>
+                          <h5 className="mt-3 text-lg font-black">{topic.name}</h5>
 
                           <div className="mt-5 flex flex-wrap gap-2">
                             {statuses.map((status) => (
                               <button
                                 key={status}
-                                onClick={() =>
-                                  updateTopicStatus(topic.id, status)
-                                }
+                                onClick={() => updateTopicStatus(topic.id, status)}
                                 className={`rounded-full px-4 py-2 text-xs font-black transition ${
                                   topicStatus === status
                                     ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
@@ -685,10 +657,7 @@ function PlannerView() {
 
   const completedTasks = tasks.filter((task) => task.status === "Done").length
   const pendingTasks = tasks.filter((task) => task.status === "Pending").length
-  const totalMinutes = tasks.reduce(
-    (sum, task) => sum + Number(task.duration || 0),
-    0,
-  )
+  const totalMinutes = tasks.reduce((sum, task) => sum + Number(task.duration || 0), 0)
 
   const completionRate =
     tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0
@@ -716,9 +685,7 @@ function PlannerView() {
   }
 
   function updateTaskStatus(id: string, status: StudyTask["status"]) {
-    setTasks(
-      tasks.map((task) => (task.id === id ? { ...task, status } : task)),
-    )
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, status } : task)))
   }
 
   function deleteTask(id: string) {
@@ -757,9 +724,7 @@ function PlannerView() {
 
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-sm font-black text-slate-500">Planner Progress</p>
-          <h3 className="mt-3 text-4xl font-black text-blue-600">
-            {completionRate}%
-          </h3>
+          <h3 className="mt-3 text-4xl font-black text-blue-600">{completionRate}%</h3>
           <p className="mt-2 text-sm font-semibold text-slate-500">
             Today’s task completion
           </p>
@@ -897,9 +862,7 @@ function PlannerView() {
           <div className="mt-6 space-y-4">
             {tasks.length === 0 ? (
               <div className="rounded-[2rem] bg-slate-50 p-10 text-center">
-                <p className="text-lg font-black text-slate-700">
-                  No tasks yet.
-                </p>
+                <p className="text-lg font-black text-slate-700">No tasks yet.</p>
                 <p className="mt-2 text-sm font-semibold text-slate-500">
                   Add your first study task and start your plan.
                 </p>
@@ -975,8 +938,8 @@ function DashboardView() {
             Today is a good day to protect your Sankalp.
           </h2>
           <p className="mt-5 max-w-2xl text-slate-300">
-            Track today’s plan, syllabus progress, revision due, mock scores,
-            and weak topics from one focused dashboard.
+            Track today’s plan, syllabus progress, revision due, mock scores, and weak
+            topics from one focused dashboard.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -1121,8 +1084,8 @@ function SimplePage({ title, text }: { title: string; text: string }) {
 
       <div className="mt-8 rounded-3xl bg-slate-50 p-6">
         <p className="font-bold text-slate-700">
-          This page is part of the frontend MVP. Working forms and cloud sync
-          will be added step by step.
+          This page is part of the frontend MVP. Working forms and cloud sync will be
+          added step by step.
         </p>
       </div>
     </div>
@@ -1137,9 +1100,9 @@ function AiTutorView() {
       </div>
       <h2 className="text-4xl font-black">AI Tutor is coming soon.</h2>
       <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-        AI Tutor will help students understand weak topics, create study plans,
-        analyze mistakes, and revise smarter. It will be added later with proper
-        cost control and safety.
+        AI Tutor will help students understand weak topics, create study plans, analyze
+        mistakes, and revise smarter. It will be added later with proper cost control
+        and safety.
       </p>
     </div>
   )

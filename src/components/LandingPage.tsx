@@ -4,44 +4,76 @@ type LandingPageProps = {
 
 const coreFeatures = [
   {
-    title: "Built-in Syllabus Tracker",
-    text: "Track ready-made chapters and topics without manually creating your syllabus.",
-    icon: "📚",
-  },
-  {
+    icon: "M7 2v3M17 2v3M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z",
+    iconBg: "linear-gradient(135deg, #2563eb, #38bdf8)",
+    tag: "Planner",
     title: "Smart Study Planner",
-    text: "Plan daily tasks with subject, priority, duration, and progress status.",
-    icon: "📅",
+    text: "Create daily study tasks with subject, duration, priority, and status so your preparation stays organized every day.",
+    description:
+      "Create daily study tasks with subject, duration, priority, and status so your preparation stays organized every day.",
   },
   {
+    icon: "M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5zM4 5.5v15M8 7h8M8 11h8",
+    iconBg: "linear-gradient(135deg, #0f766e, #2dd4bf)",
+    tag: "Syllabus",
+    title: "Built-in Syllabus Tracker",
+    text: "Track chapters and topics without manually creating your syllabus. Start preparation faster with ready syllabus structure.",
+    description:
+      "Track chapters and topics without manually creating your syllabus. Start preparation faster with ready syllabus structure.",
+  },
+  {
+    icon: "M4 19V5M4 19h16M8 15l3-3 3 2 5-6M18 8h1v1",
+    iconBg: "linear-gradient(135deg, #16a34a, #86efac)",
+    tag: "Progress",
+    title: "Topic Progress System",
+    text: "Mark every topic as Not Started, Learning, Revision, PYQ Done, Weak, or Completed and clearly understand where you stand.",
+    description:
+      "Mark every topic as Not Started, Learning, Revision, PYQ Done, Weak, or Completed and clearly understand where you stand.",
+  },
+  {
+    icon: "M6 3h9l5 5v13H6V3zM14 3v6h6M9 13h6M9 17h8",
+    iconBg: "linear-gradient(135deg, #7c3aed, #c084fc)",
+    tag: "Practice",
     title: "PYQ Practice",
-    text: "Organize previous year question practice topic-wise and chapter-wise.",
-    icon: "π",
+    text: "Plan previous year question practice subject-wise and chapter-wise so revision becomes more exam-focused.",
+    description:
+      "Plan previous year question practice subject-wise and chapter-wise so revision becomes more exam-focused.",
   },
   {
+    icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 13a1 1 0 1 0 0 0-2 1 1 0 0 0 0 2z",
+    iconBg: "linear-gradient(135deg, #ea580c, #facc15)",
+    tag: "Tests",
     title: "Mock Test Tracker",
-    text: "Track scores, accuracy, weak areas, and improvement after every test.",
-    icon: "📝",
+    text: "Record mock test scores, accuracy, weak areas, and improvement so every test helps you prepare better.",
+    description:
+      "Record mock test scores, accuracy, weak areas, and improvement so every test helps you prepare better.",
   },
   {
+    icon: "M12 3l10 18H2L12 3zM12 9v5M12 17h.01",
+    iconBg: "linear-gradient(135deg, #dc2626, #fb7185)",
+    tag: "Mistakes",
     title: "Mistake Notebook",
-    text: "Save mistakes, mark them for revision, and fix them before the next test.",
-    icon: "⚠️",
+    text: "Save conceptual mistakes, calculation errors, silly mistakes, and weak topics in one place for focused revision.",
+    description:
+      "Save conceptual mistakes, calculation errors, silly mistakes, and weak topics in one place for focused revision.",
   },
   {
+    icon: "M4 19h16M7 16V9M12 16V5M17 16v-8",
+    iconBg: "linear-gradient(135deg, #0891b2, #67e8f9)",
+    tag: "Analytics",
     title: "Analytics Dashboard",
-    text: "See subject progress, weak topics, completed topics, and next focus areas.",
-    icon: "📊",
+    text: "View overall syllabus progress, subject progress, completed topics, weak topics, and study consistency in a clean dashboard.",
+    description:
+      "View overall syllabus progress, subject progress, completed topics, weak topics, and study consistency in a clean dashboard.",
   },
   {
+    icon: "M12 3l1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3zM19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14z",
+    iconBg: "linear-gradient(135deg, #4f46e5, #ec4899)",
+    tag: "AI",
     title: "AI Tutor Coming Soon",
-    text: "Future AI support for weak topics, revision planning, and mistake analysis.",
-    icon: "🤖",
-  },
-  {
-    title: "Study Material",
-    text: "Keep notes, formulas, revision sheets, and resources organized.",
-    icon: "📘",
+    text: "Future AI support will help students understand weak topics, plan revision, and get smarter study suggestions.",
+    description:
+      "Future AI support will help students understand weak topics, plan revision, and get smarter study suggestions.",
   },
 ]
 
@@ -115,13 +147,7 @@ const faqs = [
   },
 ]
 
-function MiniProgressRow({
-  subject,
-  value,
-}: {
-  subject: string
-  value: number
-}) {
+function MiniProgressRow({ subject, value }: { subject: string; value: number }) {
   return (
     <div className="mt-4">
       <div className="mb-2 flex items-center justify-between text-sm">
@@ -129,10 +155,7 @@ function MiniProgressRow({
         <span className="font-black text-blue-700">{value}%</span>
       </div>
       <div className="h-2 rounded-full bg-slate-200">
-        <div
-          className="h-2 rounded-full bg-blue-600"
-          style={{ width: `${value}%` }}
-        />
+        <div className="h-2 rounded-full bg-blue-600" style={{ width: `${value}%` }} />
       </div>
     </div>
   )
@@ -176,7 +199,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             </button>
             <button
               onClick={onLogin}
-             className="hidden rounded-2xl border border-slate-300 bg-white px-6 py-3 text-base font-black text-slate-900 shadow-sm hover:bg-slate-50 sm:block"
+              className="hidden rounded-2xl border border-slate-300 bg-white px-6 py-3 text-base font-black text-slate-900 shadow-sm hover:bg-slate-50 sm:block"
             >
               Get Started
             </button>
@@ -184,7 +207,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
         </div>
       </nav>
 
-           <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-6 py-20 md:py-28">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-6 py-20 md:py-28">
         <div className="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full bg-blue-200/40 blur-3xl" />
         <div className="absolute right-0 top-20 h-96 w-96 rounded-full bg-indigo-200/40 blur-3xl" />
 
@@ -195,15 +218,14 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             </div>
 
             <h1 className="max-w-3xl text-5xl font-black leading-[1.05] tracking-tight text-slate-950 md:text-7xl">
-              Plan smarter.{" "}
-              <span className="text-blue-600">Track every topic.</span>{" "}
+              Plan smarter. <span className="text-blue-600">Track every topic.</span>{" "}
               Improve every test.
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-              Study Sankalp helps students organize syllabus, daily study plans,
-              weak topics, PYQs, mock tests, and mistakes in one focused
-              preparation workspace.
+              Study Sankalp helps students organize syllabus, daily study plans, weak
+              topics, PYQs, mock tests, and mistakes in one focused preparation
+              workspace.
             </p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -224,21 +246,15 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             <div className="mt-10 grid max-w-xl grid-cols-3 gap-3">
               <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                 <p className="text-2xl font-black text-blue-700">5</p>
-                <p className="mt-1 text-xs font-bold text-slate-500">
-                  subject groups
-                </p>
+                <p className="mt-1 text-xs font-bold text-slate-500">subject groups</p>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                 <p className="text-2xl font-black text-blue-700">100+</p>
-                <p className="mt-1 text-xs font-bold text-slate-500">
-                  chapters
-                </p>
+                <p className="mt-1 text-xs font-bold text-slate-500">chapters</p>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                 <p className="text-2xl font-black text-blue-700">600+</p>
-                <p className="mt-1 text-xs font-bold text-slate-500">
-                  topics
-                </p>
+                <p className="mt-1 text-xs font-bold text-slate-500">topics</p>
               </div>
             </div>
           </div>
@@ -278,28 +294,18 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-3">
                   <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                    <p className="text-xs font-bold text-slate-500">
-                      Overall Progress
-                    </p>
-                    <p className="mt-2 text-3xl font-black text-blue-700">
-                      64%
-                    </p>
+                    <p className="text-xs font-bold text-slate-500">Overall Progress</p>
+                    <p className="mt-2 text-3xl font-black text-blue-700">64%</p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                    <p className="text-xs font-bold text-slate-500">
-                      Weak Topics
-                    </p>
+                    <p className="text-xs font-bold text-slate-500">Weak Topics</p>
                     <p className="mt-2 text-3xl font-black text-red-600">7</p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                    <p className="text-xs font-bold text-slate-500">
-                      Today Plan
-                    </p>
-                    <p className="mt-2 text-3xl font-black text-teal-600">
-                      4h
-                    </p>
+                    <p className="text-xs font-bold text-slate-500">Today Plan</p>
+                    <p className="mt-2 text-3xl font-black text-teal-600">4h</p>
                   </div>
                 </div>
 
@@ -308,9 +314,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                     <p className="text-sm font-black text-slate-950">
                       Subject Progress
                     </p>
-                    <p className="text-xs font-bold text-slate-500">
-                      JEE Syllabus
-                    </p>
+                    <p className="text-xs font-bold text-slate-500">JEE Syllabus</p>
                   </div>
 
                   <MiniProgressRow subject="Physics" value={58} />
@@ -320,24 +324,16 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
 
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
                   <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
-                    <p className="text-xs font-black text-blue-700">
-                      Next Topic
-                    </p>
-                    <p className="mt-2 font-black text-slate-950">
-                      Laws of Motion
-                    </p>
+                    <p className="text-xs font-black text-blue-700">Next Topic</p>
+                    <p className="mt-2 font-black text-slate-950">Laws of Motion</p>
                     <p className="mt-1 text-xs text-slate-500">
                       Start with FBD and NLM applications
                     </p>
                   </div>
 
                   <div className="rounded-2xl border border-red-100 bg-red-50 p-4">
-                    <p className="text-xs font-black text-red-700">
-                      Weak Area
-                    </p>
-                    <p className="mt-2 font-black text-slate-950">
-                      Organic Chemistry
-                    </p>
+                    <p className="text-xs font-black text-red-700">Weak Area</p>
+                    <p className="mt-2 font-black text-slate-950">Organic Chemistry</p>
                     <p className="mt-1 text-xs text-slate-500">
                       Add revision before next test
                     </p>
@@ -364,8 +360,8 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
               Everything a serious student needs to stay on track.
             </h2>
             <p className="mt-5 text-slate-600">
-              Study Sankalp connects planning, syllabus tracking, revision, and
-              test improvement in one clean system.
+              Study Sankalp connects planning, syllabus tracking, revision, and test
+              improvement in one clean system.
             </p>
           </div>
 
@@ -375,25 +371,33 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 key={feature.title}
                 className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-xl">
-                  {feature.icon}
+                <div
+                  className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg shadow-slate-200"
+                  style={{ background: feature.iconBg }}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-7 w-7 text-white"
+                  >
+                    <path d={feature.icon} />
+                  </svg>
                 </div>
                 <h3 className="mt-5 text-xl font-black text-slate-950">
                   {feature.title}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">
-                  {feature.text}
-                </p>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{feature.text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section
-        id="exams"
-        className="border-y border-slate-200 bg-white px-6 py-20"
-      >
+      <section id="exams" className="border-y border-slate-200 bg-white px-6 py-20">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <div>
             <p className="font-black text-blue-700">Exam Support</p>
@@ -401,8 +405,8 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
               Made for every serious exam goal.
             </h2>
             <p className="mt-5 text-slate-600">
-              Start with JEE preparation today. More exam-specific trackers can
-              be added as the product grows.
+              Start with JEE preparation today. More exam-specific trackers can be added
+              as the product grows.
             </p>
           </div>
 
@@ -434,21 +438,15 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 key={step.number}
                 className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm"
               >
-                <p className="text-sm font-black text-blue-700">
-                  {step.number}
-                </p>
-                <h3 className="mt-4 text-xl font-black text-slate-950">
-                  {step.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">
-                  {step.text}
-                </p>
+                <p className="text-sm font-black text-blue-700">{step.number}</p>
+                <h3 className="mt-4 text-xl font-black text-slate-950">{step.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{step.text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-            <section className="px-6 py-20">
+      <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm md:p-10">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
@@ -457,8 +455,8 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 See your preparation clearly.
               </h2>
               <p className="mt-5 text-slate-600">
-                Track progress, identify weak areas, and know what to study next
-                without jumping between notebooks, apps, and random notes.
+                Track progress, identify weak areas, and know what to study next without
+                jumping between notebooks, apps, and random notes.
               </p>
             </div>
 
@@ -497,8 +495,8 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 AI Tutor for smarter preparation.
               </h2>
               <p className="mt-5 text-lg leading-8 text-slate-600">
-                AI Tutor will help students understand weak topics, improve
-                revision plans, analyze mistakes, and prepare with better focus.
+                AI Tutor will help students understand weak topics, improve revision
+                plans, analyze mistakes, and prepare with better focus.
               </p>
             </div>
 
@@ -522,7 +520,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
         </div>
       </section>
 
-           <section id="pricing" className="px-6 py-20">
+      <section id="pricing" className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
             <p className="font-black text-blue-700">Free Plan</p>
@@ -530,9 +528,9 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
               Start free. Build your complete preparation system.
             </h2>
             <p className="mt-5 text-lg leading-8 text-slate-600">
-              Study Sankalp starts free for students. Plan your study, track
-              syllabus progress, revise weak topics, and grow with smarter tools
-              as the product improves.
+              Study Sankalp starts free for students. Plan your study, track syllabus
+              progress, revise weak topics, and grow with smarter tools as the product
+              improves.
             </p>
           </div>
 
@@ -548,8 +546,8 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 </h3>
 
                 <p className="mt-4 text-lg leading-8 text-slate-600">
-                  Perfect for students who want a serious, organized, and
-                  focused preparation workspace.
+                  Perfect for students who want a serious, organized, and focused
+                  preparation workspace.
                 </p>
 
                 <div className="mt-7 rounded-3xl border border-blue-100 bg-white p-5 shadow-sm">
@@ -557,8 +555,8 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                     Included in Free Plan
                   </p>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
-                    More advanced tools like AI Tutor, cloud sync, and smart
-                    analytics will be added step by step.
+                    More advanced tools like AI Tutor, cloud sync, and smart analytics
+                    will be added step by step.
                   </p>
                 </div>
 
@@ -593,9 +591,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-black text-blue-700">
                         ✓
                       </span>
-                      <p className="text-sm font-black text-slate-800">
-                        {feature}
-                      </p>
+                      <p className="text-sm font-black text-slate-800">{feature}</p>
                     </div>
                   </div>
                 ))}
@@ -620,19 +616,15 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 key={faq.question}
                 className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm"
               >
-                <h3 className="text-lg font-black text-slate-950">
-                  {faq.question}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">
-                  {faq.answer}
-                </p>
+                <h3 className="text-lg font-black text-slate-950">{faq.question}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{faq.answer}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-           <footer className="border-t border-slate-200 bg-white px-6 py-16">
+      <footer className="border-t border-slate-200 bg-white px-6 py-16">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
             <div>
@@ -643,22 +635,19 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
               />
 
               <p className="mt-5 max-w-md text-base leading-7 text-slate-600">
-                Study Sankalp helps students plan study, track syllabus
-                progress, revise weak topics, and stay consistent throughout
-                their preparation journey.
+                Study Sankalp helps students plan study, track syllabus progress, revise
+                weak topics, and stay consistent throughout their preparation journey.
               </p>
 
               <div className="mt-8">
-                <p className="text-lg font-black text-slate-950">
-                  Reach out to us
-                </p>
+                <p className="text-lg font-black text-slate-950">Reach out to us</p>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Have questions about Study Sankalp? Contact support and get
-                  help with your preparation workspace.
+                  Have questions about Study Sankalp? Contact support and get help with
+                  your preparation workspace.
                 </p>
 
                 <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-black text-slate-800">
-                  ✉️ support@studysankalp.com
+                  ✉️ studysankalp.support@gmail.com
                 </div>
               </div>
             </div>
@@ -685,9 +674,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             </div>
 
             <div>
-              <p className="text-lg font-black text-slate-950">
-                Study Tools
-              </p>
+              <p className="text-lg font-black text-slate-950">Study Tools</p>
               <div className="mt-5 space-y-3 text-base font-medium text-slate-600">
                 <p>Study Planner</p>
                 <p>Built-in Syllabus Tracker</p>
@@ -699,9 +686,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             </div>
 
             <div>
-              <p className="text-lg font-black text-slate-950">
-                Popular Goals
-              </p>
+              <p className="text-lg font-black text-slate-950">Popular Goals</p>
               <div className="mt-5 grid grid-cols-2 gap-3 text-base font-medium text-slate-600">
                 <p>JEE</p>
                 <p>NEET</p>
@@ -729,9 +714,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             </div>
 
             <div>
-              <p className="text-lg font-black text-slate-950">
-                Study Material
-              </p>
+              <p className="text-lg font-black text-slate-950">Study Material</p>
               <div className="mt-5 space-y-3 text-base font-medium text-slate-600">
                 <p>JEE Study Material</p>
                 <p>Physics Formula Sheets</p>
@@ -742,12 +725,10 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             </div>
 
             <div>
-              <p className="text-lg font-black text-slate-950">
-                Student Promise
-              </p>
+              <p className="text-lg font-black text-slate-950">Student Promise</p>
               <p className="mt-5 max-w-sm text-base leading-7 text-slate-600">
-                No fake claims. No unnecessary clutter. Study Sankalp is built
-                to help serious students plan, track, and progress with clarity.
+                No fake claims. No unnecessary clutter. Study Sankalp is built to help
+                serious students plan, track, and progress with clarity.
               </p>
 
               <button
@@ -771,6 +752,6 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
           </div>
         </div>
       </footer>
-  </main>
+    </main>
   )
 }
