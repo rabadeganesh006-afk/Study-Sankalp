@@ -40,7 +40,7 @@ const coreFeatures = [
       "Plan previous year question practice subject-wise and chapter-wise so revision becomes more exam-focused.",
   },
   {
-    icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 13a1 1 0 1 0 0 0-2 1 1 0 0 0 0 2z",
+    icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 12l3-3M12 12l-3-3M12 12v5",
     iconBg: "linear-gradient(135deg, #ea580c, #facc15)",
     tag: "Tests",
     title: "Mock Test Tracker",
