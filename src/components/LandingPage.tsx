@@ -4,72 +4,72 @@ type LandingPageProps = {
 
 const coreFeatures = [
   {
-    icon: "M7 2v3M17 2v3M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z",
+    icon: "M 5 4 H 19 V 20 H 5 Z M 8 2 V 6 M 16 2 V 6 M 5 9 H 19",
     iconBg: "linear-gradient(135deg, #2563eb, #38bdf8)",
-    tag: "Planner",
+    tag: "Daily Planning",
     title: "Smart Study Planner",
-    text: "Create daily study tasks with subject, duration, priority, and status so your preparation stays organized every day.",
+    text: "Create daily study tasks with subject, duration, priority, and status so your preparation stays organized without keeping separate notes.",
     description:
-      "Create daily study tasks with subject, duration, priority, and status so your preparation stays organized every day.",
+      "Create daily study tasks with subject, duration, priority, and status so your preparation stays organized without keeping separate notes.",
   },
   {
-    icon: "M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5zM4 5.5v15M8 7h8M8 11h8",
+    icon: "M 4 5 H 10 C 11 5 12 6 12 7 V 20 C 12 19 11 18 10 18 H 4 Z M 12 7 C 12 6 13 5 14 5 H 20 V 18 H 14 C 13 18 12 19 12 20",
     iconBg: "linear-gradient(135deg, #0f766e, #2dd4bf)",
     tag: "Syllabus",
     title: "Built-in Syllabus Tracker",
-    text: "Track chapters and topics without manually creating your syllabus. Start preparation faster with ready syllabus structure.",
+    text: "Track chapters and topics from a ready syllabus structure. Students can start tracking preparation without creating every topic manually.",
     description:
-      "Track chapters and topics without manually creating your syllabus. Start preparation faster with ready syllabus structure.",
+      "Track chapters and topics from a ready syllabus structure. Students can start tracking preparation without creating every topic manually.",
   },
   {
-    icon: "M4 19V5M4 19h16M8 15l3-3 3 2 5-6M18 8h1v1",
+    icon: "M 4 19 H 20 M 6 16 L 10 12 L 13 14 L 18 8 M 18 8 H 20 V 10",
     iconBg: "linear-gradient(135deg, #16a34a, #86efac)",
     tag: "Progress",
     title: "Topic Progress System",
-    text: "Mark every topic as Not Started, Learning, Revision, PYQ Done, Weak, or Completed and clearly understand where you stand.",
+    text: "Mark topics as Learning, Revision, PYQ Done, Weak, or Completed so you always know what needs attention next.",
     description:
-      "Mark every topic as Not Started, Learning, Revision, PYQ Done, Weak, or Completed and clearly understand where you stand.",
+      "Mark topics as Learning, Revision, PYQ Done, Weak, or Completed so you always know what needs attention next.",
   },
   {
-    icon: "M6 3h9l5 5v13H6V3zM14 3v6h6M9 13h6M9 17h8",
+    icon: "M 6 3 H 15 L 20 8 V 21 H 6 Z M 15 3 V 8 H 20 M 9 13 H 16 M 9 17 H 17",
     iconBg: "linear-gradient(135deg, #7c3aed, #c084fc)",
     tag: "Practice",
     title: "PYQ Practice",
-    text: "Plan previous year question practice subject-wise and chapter-wise so revision becomes more exam-focused.",
+    text: "Plan previous year question practice subject-wise and chapter-wise so revision becomes closer to the real exam pattern.",
     description:
-      "Plan previous year question practice subject-wise and chapter-wise so revision becomes more exam-focused.",
+      "Plan previous year question practice subject-wise and chapter-wise so revision becomes closer to the real exam pattern.",
   },
   {
-    icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 12l3-3M12 12l-3-3M12 12v5",
+    icon: "M 12 3 L 20 12 L 12 21 L 4 12 Z M 12 8 L 16 12 L 12 16 L 8 12 Z M 12 11 H 12.01",
     iconBg: "linear-gradient(135deg, #ea580c, #facc15)",
     tag: "Tests",
     title: "Mock Test Tracker",
-    text: "Record mock test scores, accuracy, weak areas, and improvement so every test helps you prepare better.",
+    text: "Record mock test scores, accuracy, weak areas, and improvement notes so every test gives a clear next step.",
     description:
-      "Record mock test scores, accuracy, weak areas, and improvement so every test helps you prepare better.",
+      "Record mock test scores, accuracy, weak areas, and improvement notes so every test gives a clear next step.",
   },
   {
-    icon: "M12 3l10 18H2L12 3zM12 9v5M12 17h.01",
+    icon: "M 12 3 L 22 21 H 2 Z M 12 9 V 14 M 12 17 H 12.01",
     iconBg: "linear-gradient(135deg, #dc2626, #fb7185)",
     tag: "Mistakes",
     title: "Mistake Notebook",
-    text: "Save conceptual mistakes, calculation errors, silly mistakes, and weak topics in one place for focused revision.",
+    text: "Save conceptual mistakes, calculation errors, silly mistakes, and weak topics in one place for focused revision before tests.",
     description:
-      "Save conceptual mistakes, calculation errors, silly mistakes, and weak topics in one place for focused revision.",
+      "Save conceptual mistakes, calculation errors, silly mistakes, and weak topics in one place for focused revision before tests.",
   },
   {
-    icon: "M4 19h16M7 16V9M12 16V5M17 16v-8",
+    icon: "M 5 19 V 10 M 12 19 V 5 M 19 19 V 8 M 4 19 H 20",
     iconBg: "linear-gradient(135deg, #0891b2, #67e8f9)",
     tag: "Analytics",
     title: "Analytics Dashboard",
-    text: "View overall syllabus progress, subject progress, completed topics, weak topics, and study consistency in a clean dashboard.",
+    text: "View syllabus progress, subject progress, completed topics, weak topics, and study consistency from one clean dashboard.",
     description:
-      "View overall syllabus progress, subject progress, completed topics, weak topics, and study consistency in a clean dashboard.",
+      "View syllabus progress, subject progress, completed topics, weak topics, and study consistency from one clean dashboard.",
   },
   {
-    icon: "M12 3l1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3zM19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14z",
+    icon: "M 12 3 L 14 8 L 19 10 L 14 12 L 12 17 L 10 12 L 5 10 L 10 8 Z M 19 15 L 20 17 L 22 18 L 20 19 L 19 21 L 18 19 L 16 18 L 18 17 Z",
     iconBg: "linear-gradient(135deg, #4f46e5, #ec4899)",
-    tag: "AI",
+    tag: "Coming Soon",
     title: "AI Tutor Coming Soon",
     text: "Future AI support will help students understand weak topics, plan revision, and get smarter study suggestions.",
     description:
