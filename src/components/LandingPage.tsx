@@ -1,3 +1,5 @@
+import HowItWorksPage from "./HowItWorksPage"
+import { useState } from "react"
 type LandingPageProps = {
   onLogin: () => void
 }
@@ -78,21 +80,30 @@ const coreFeatures = [
 ]
 
 const exams = [
-  "JEE",
-  "NEET",
+  "IIT-JEE",
+  "NEET UG",
+  "NEET PG",
   "MHT-CET",
-  "Boards",
   "CUET",
-  "UPSC",
-  "SSC",
-  "Banking",
-  "Railway",
-  "NDA/CDS",
   "GATE",
-  "CAT",
-  "CLAT",
+  "Polytechnic",
+  "Class 9th to 12th",
+  "Boards",
+  "Olympiads",
+  "ICSE Board",
+  "School Curriculum",
+  "SSC",
+  "UPSC",
   "State PSC",
-  "Custom Goal",
+  "Defence",
+  "NDA/CDS",
+  "Railway",
+  "Banking",
+  "Government Bank Exams",
+  "Judiciary",
+  "Teaching",
+  "Teacher Training",
+  "UGC NET",
 ]
 
 const steps = [
@@ -162,6 +173,14 @@ function MiniProgressRow({ subject, value }: { subject: string; value: number })
 }
 
 export default function LandingPage({ onLogin }: LandingPageProps) {
+  const [landingView, setLandingView] = useState<"home" | "how-it-works">("home")
+
+  if (landingView === "how-it-works") {
+    return (
+      <HowItWorksPage onBack={() => setLandingView("home")} onGetStarted={onLogin} />
+    )
+  }
+
   return (
     <main className="min-h-screen bg-white text-slate-950">
       <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-xl">
@@ -179,7 +198,14 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             <a href="#exams" className="hover:text-blue-700">
               Exams
             </a>
-            <a href="#how-it-works" className="hover:text-blue-700">
+            <a
+              href="#how-it-works"
+              onClick={(event) => {
+                event.preventDefault()
+                setLandingView("how-it-works")
+              }}
+              className="hover:text-blue-700"
+            >
               How It Works
             </a>
             <a href="#ai" className="hover:text-blue-700">
@@ -405,8 +431,9 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
               Made for every serious exam goal.
             </h2>
             <p className="mt-5 text-slate-600">
-              Start with JEE preparation today. More exam-specific trackers can be added
-              as the product grows.
+              Choose your exam goal and use one focused workspace to plan study, track
+              topics, revise weak areas, and review your test progress without scattered
+              notes.
             </p>
           </div>
 
@@ -661,7 +688,14 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 <a href="#exams" className="block hover:text-blue-700">
                   Exams
                 </a>
-                <a href="#how-it-works" className="block hover:text-blue-700">
+                <a
+                  href="#how-it-works"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    setLandingView("how-it-works")
+                  }}
+                  className="block hover:text-blue-700"
+                >
                   How It Works
                 </a>
                 <a href="#pricing" className="block hover:text-blue-700">
